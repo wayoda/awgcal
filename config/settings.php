@@ -1,12 +1,8 @@
 <?php
-$url = 'http://abfallkalender.tal42.de';
-
-$title = 'Abfallkalender und Sperrmüll Wuppertal | TAL42';
-
-$static = array('datenschutz', 'disclaimer', 'faq', 'impressum');
+$title = 'AWGCAL';
 
 $dbhost = 'localhost';
-$dbname = 'abfallkalender';
-$dbuser = 'abfallkalender';
-$dbpass = ''; // Paswort eintragen
+$dbname = 'awgcal';
+$dbuser = 'awgcal';
+$dbpass = '';
 ?>

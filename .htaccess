@@ -1,0 +1,9 @@
+Options +FollowSymLinks
+RewriteEngine on
+
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^/+(css|ical|js)/?
+RewriteCond %{REQUEST_URI} !(\..{2,4})$
+RewriteCond %{QUERY_STRING} ^(.*)$
+RewriteRule ^(.*)$    index.php?page=$1&%1 [L]
