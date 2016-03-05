@@ -1,14 +1,15 @@
 $(document).ready(function() {
 
     // Standard Formsubmit verhindern
-    $(window).keydown(function(event) {
+    $("input#search").keydown(function(event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
     });
 
-    var selectedElement = "";
+    var jsonData;
+    var selectedElement = -1;
 
     // Livesuche
     function search() {
@@ -22,17 +23,17 @@ $(document).ready(function() {
                     query: query_value
                 },
                 cache: false,
-                success: function(html) {
-                    var indexStart = html.indexOf("href=");
-                    if (indexStart != -1) {
-                        indexStart += 6;
-                        var indexEnd = html.indexOf("\"", indexStart);
-                        selectedElement = html.substr(indexStart, indexEnd - indexStart);
-                    } else {
-                        selectedElement = "";
-                    }
+                success: function(response) {
+                    jsonData = JSON.parse(response);
+                    var htmlResult = "";
 
-                    $("ul#results").html(html);
+                    var i;
+                    for (i = 0; i < jsonData.length; i++) {
+                        htmlResult += "<li class=\"dropdown-item\"><a href=\"" + jsonData[i].url + "\"><p>" + jsonData[i].name + "</p></li>";
+                    };
+
+                    selectedElement = 0;
+                    $("ul#results").html(htmlResult);
                 }
             });
         }
@@ -41,10 +42,12 @@ $(document).ready(function() {
 
     $("input#search").on("keyup", function(e) {
 
+
+
         // Zu ausgewaehltem Element gehen
         if ((e.keyCode == 13)) {
-            if (selectedElement != "") {
-                location = selectedElement;
+            if (selectedElement != -1) {
+                location = jsonData[selectedElement].url;
             }
         }
 
