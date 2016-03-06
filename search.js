@@ -3,44 +3,57 @@ $(document).ready(function() {
     var jsonData;
     var selectedElement = -1;
 
-    // Standard Formsubmit verhindern
-    $("input#search").keydown(function(e) {
-        if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) {
-            e.preventDefault();
-        }
-
-        if (e.keyCode == 13) { // Enter
-            if (selectedElement == -1 && jsonData.length < 1) {
-                location = jsonData[0].url;
-            } else {
-                location = jsonData[selectedElement].url;
-            }
-            return false;
-        }
-
-        if (selectedElement != -2) { // Nur wenn Suchergebnisse vorhanden sind
-            if (e.keyCode == 38 && selectedElement > 0) { // up
-                var element = document.getElementById("el" + selectedElement);
-                element.classList.remove("active");
-                selectedElement--;
-                element = document.getElementById("el" + selectedElement);
-                element.classList.add("active");
-                return false;
+    $("input#search").keyup(function(e) {
+        // Navigation durch Suchergebnisse
+        if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
+            if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) {
+                e.preventDefault();
             }
 
-            if (e.keyCode == 40 && selectedElement < jsonData.length - 1) { // down
-                if (selectedElement == -1) {
-                    var element = document.getElementById("el0");
-                    element.classList.add("active");
-                    selectedElement = 0;
+            if (e.keyCode == 13) { // Enter
+                if (selectedElement == -1 && jsonData.length < 1) {
+                    location = jsonData[0].url;
                 } else {
-                    var element = document.getElementById("el" + selectedElement);
-                    element.classList.remove("active");
-                    selectedElement++;
-                    element = document.getElementById("el" + selectedElement);
-                    element.classList.add("active");
+                    location = jsonData[selectedElement].url;
                 }
                 return false;
+            }
+
+            if (selectedElement != -2) { // Nur wenn Suchergebnisse vorhanden sind
+                if (e.keyCode == 38 && selectedElement > 0) { // up
+                    var element = document.getElementById("el" + selectedElement);
+                    element.classList.remove("active");
+                    selectedElement--;
+                    element = document.getElementById("el" + selectedElement);
+                    element.classList.add("active");
+                    return false;
+                }
+
+                if (e.keyCode == 40 && selectedElement < jsonData.length - 1) { // down
+                    if (selectedElement == -1) {
+                        var element = document.getElementById("el0");
+                        element.classList.add("active");
+                        selectedElement = 0;
+                    } else {
+                        var element = document.getElementById("el" + selectedElement);
+                        element.classList.remove("active");
+                        selectedElement++;
+                        element = document.getElementById("el" + selectedElement);
+                        element.classList.add("active");
+                    }
+                    return false;
+                }
+            }
+        } else { // Suche
+            clearTimeout($.data(this, 'timer'));
+            var search_string = $(this).val();
+            if (search_string == '') {
+                $("ul#results").fadeOut();
+                $('h4#results-text').fadeOut();
+            } else {
+                $("ul#results").fadeIn();
+                $('h4#results-text').fadeIn();
+                $(this).data('timer', setTimeout(search, 100));
             }
         }
     });
@@ -75,21 +88,5 @@ $(document).ready(function() {
         }
         return false;
     }
-
-    $("input#search").on("keyup", function(e) {
-        // Pfeiltasten abfangen
-        if (e.keyCode != 13 && e.keyCode != 37 && e.keyCode != 38 && e.keyCode != 39 && e.keyCode != 40) {
-            clearTimeout($.data(this, 'timer'));
-            var search_string = $(this).val();
-            if (search_string == '') {
-                $("ul#results").fadeOut();
-                $('h4#results-text').fadeOut();
-            } else {
-                $("ul#results").fadeIn();
-                $('h4#results-text').fadeIn();
-                $(this).data('timer', setTimeout(search, 100));
-            }
-        }
-    });
 
 });
