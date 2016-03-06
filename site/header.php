@@ -33,7 +33,7 @@ if (isset($canonical)) {
 				</form>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="https://github.com/DSchmidtberg/awgcal">GitHub</a></li>
-					<li><a href="https://abfallkallender.tal42.de">TAL42 AWGCAL</a></li>
+					<li><a href="https://abfallkalender.tal42.de">TAL42 AWGCAL</a></li>
 				</ul>
 			</div>
 		</div>
