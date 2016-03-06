@@ -3,6 +3,12 @@ $(document).ready(function() {
     var jsonData;
     var selectedElement = -1;
 
+    $("input#search").keydown(function(e) {
+        if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) {
+            e.preventDefault();
+        }
+    });
+
     $("input#search").keyup(function(e) {
         // Navigation durch Suchergebnisse
         if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
@@ -17,6 +23,13 @@ $(document).ready(function() {
                     location = jsonData[selectedElement].url;
                 }
                 return false;
+            }
+
+            if (e.keyCode == 27) { // Esc
+                selectedElement = -2;
+                jsonData = null;
+                $("ul#results").fadeOut();
+                $("ul#results").html("");
             }
 
             if (selectedElement != -2) { // Nur wenn Suchergebnisse vorhanden sind
@@ -49,10 +62,8 @@ $(document).ready(function() {
             var search_string = $(this).val();
             if (search_string == '') {
                 $("ul#results").fadeOut();
-                $('h4#results-text').fadeOut();
             } else {
                 $("ul#results").fadeIn();
-                $('h4#results-text').fadeIn();
                 $(this).data('timer', setTimeout(search, 100));
             }
         }
