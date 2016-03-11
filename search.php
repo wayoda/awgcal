@@ -5,8 +5,11 @@ include 'config/mysql.php';
 $search_string = preg_replace("/[^A-Za-z\ ]/", "", $_POST['query']);
 $search_string = $mysqli->real_escape_string($search_string);
 
+$key_name = "name";
+$key_url = "url";
+
 if (strlen($search_string) >= 1 && $search_string !== ' ') {
-	$query = 'SELECT * FROM strassen WHERE strasse LIKE "%' . $search_string . '%" LIMIT 10';
+	$query = 'SELECT * FROM strassen WHERE strasse LIKE "%' . $search_string . '%" AND hausnr is NULL LIMIT 10';
 
 	$result = $mysqli->query($query);
 	while ($results = $result->fetch_assoc()) {
