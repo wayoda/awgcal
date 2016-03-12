@@ -9,10 +9,6 @@ $key_name = "name";
 $key_url = "url";
 
 if (strlen($search_string) >= 1 && $search_string !== ' ') {
-	// $query = 'SELECT * FROM strassen WHERE strasse LIKE "%' . $search_string . '%" AND hausnr is NULL LIMIT 10';
-
-	// $result = $mysqli->query($query);
-
 	$stmt = $mysqli->prepare("SELECT strasse FROM strassen WHERE strasse LIKE CONCAT('%', ?, '%') AND hausnr is NULL LIMIT 10");
 	$stmt->bind_param("s", $search_string);
 	$stmt->execute();

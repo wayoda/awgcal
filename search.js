@@ -3,13 +3,16 @@ $(document).ready(function() {
     var jsonData;
     var selectedElement = -1;
 
-    $("input#search").keydown(function(e) {
+    var $input_search = $("input#search");
+    var $ul_results = $("ul#results");
+
+    $input_search.keydown(function(e) {
         if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) {
             e.preventDefault();
         }
     });
 
-    $("input#search").keyup(function(e) {
+    $input_search.keyup(function(e) {
         // Navigation durch Suchergebnisse
         if (e.keyCode == 13 || e.keyCode == 27 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40) {
             if (e.keyCode == 13 || e.keyCode == 38 || e.keyCode == 40) {
@@ -28,8 +31,8 @@ $(document).ready(function() {
             if (e.keyCode == 27) { // Esc
                 selectedElement = -2;
                 jsonData = null;
-                $("ul#results").fadeOut();
-                $("ul#results").html("");
+                $ul_results.fadeOut();
+                $ul_results.html("");
             }
 
             if (selectedElement != -2) { // Nur wenn Suchergebnisse vorhanden sind
@@ -61,17 +64,16 @@ $(document).ready(function() {
             clearTimeout($.data(this, 'timer'));
             var search_string = $(this).val();
             if (search_string == '') {
-                $("ul#results").fadeOut();
+                $ul_results.fadeOut();
             } else {
-                $("ul#results").fadeIn();
+                $ul_results.fadeIn();
                 $(this).data('timer', setTimeout(search, 100));
             }
         }
     });
 
     function search() {
-        var query_value = $('input#search').val();
-        $('b#search-string').text(query_value);
+        var query_value = $input_search.val();
         if (query_value !== '') {
             $.ajax({
                 type: "POST",
@@ -88,10 +90,10 @@ $(document).ready(function() {
                         for (i = 0; i < jsonData.length; i++) {
                             htmlResult += "<li class=\"dropdown-item\" id=\"el" + i + "\"><a href=\"" + jsonData[i].url + "\"><p>" + jsonData[i].name + "</p></li>";
                         };
-                        $("ul#results").html(htmlResult);
+                        $ul_results.html(htmlResult);
                         selectedElement = -1;
                     } else {
-                        $("ul#results").html("<li class=\"dropdown-item\"><a><p>Keine Suchergebnisse</p></li>");
+                        $ul_results.html("<li class=\"dropdown-item\"><a><p>Keine Suchergebnisse</p></li>");
                         selectedElement = -2;
                     }
                 }
