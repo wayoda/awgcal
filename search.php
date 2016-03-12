@@ -3,7 +3,6 @@ include 'config/settings.php';
 include 'config/mysql.php';
 
 $search_string = preg_replace("/[^A-Za-z\ ]/", "", $_POST['query']);
-$search_string = $mysqli->real_escape_string($search_string);
 
 $key_name = "name";
 $key_url = "url";
